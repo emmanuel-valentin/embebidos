@@ -6,6 +6,6 @@
 *.rpt
 *.bak
 *.json
-*.qpf
+# *.qpf
 *.qws
 *.qsf
