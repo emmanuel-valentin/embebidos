@@ -8,7 +8,7 @@
     * Diagrama de implementacion
     * Diagrama de objetos
     * Diagrama de paquetes
-    * Diagrama de estrucctura compuesta
+    * Diagrama de estructura compuesta
     * Diagrama de perfil
     * Diagrama de casos de uso
     * Diagrama de estados
