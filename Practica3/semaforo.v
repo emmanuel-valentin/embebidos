@@ -1,4 +1,5 @@
-module semaforo (
+module semaforo #(parameter initial_state = 3'b100) 
+(
 	input				clk_i,
 	output reg		red,
 	output reg		green,
@@ -10,9 +11,9 @@ module semaforo (
 	
 	initial begin
  		count = 6'd0;
-		green = 1'b1;
-		yellow = 1'b0;
-		red = 1'b0;
+		green = initial_state[2];
+		yellow = initial_state[1];
+		red = initial_state[0];
 	end
 	
 	always @(posedge clk_i)
@@ -43,7 +44,7 @@ module semaforo (
 			3'b10:
 				if (count == 6'd55)
 				begin
-					led_on = 1'b11;
+					led_on = 1'b00;
 					green = 1'b1;
 					yellow = 1'b0;
 					red = 1'b0;

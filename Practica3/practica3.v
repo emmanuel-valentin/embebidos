@@ -17,14 +17,14 @@ module practica3 (
 		.freq_i (sw_freq)
 	);
 
-	semaforo semaforo1 (
+	semaforo #(.initial_state(3'b100)) semaforo1 (
 		.clk_i(clk_div),
 		.red(red1_o),
 		.green(green1_o),
 		.yellow(yellow1_o)
 	);
 	
-	semaforo semaforo2 (
+	semaforo #(.initial_state(3'b001)) semaforo2 (
 		.clk_i(clk_div),
 		.red(red2_o),
 		.green(green2_o),
