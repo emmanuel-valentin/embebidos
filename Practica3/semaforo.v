@@ -3,7 +3,7 @@ module semaforo #(parameter initial_state = 2'd0)
 	input				clk_i,
 	input				rst_i,
 	// TODO: Implementar el push button para dar paso al peaton
-	input				sw_green_i,
+	// input				sw_green_i,
 	output reg		red,
 	output reg		green,
 	output reg		yellow
@@ -23,7 +23,7 @@ module semaforo #(parameter initial_state = 2'd0)
 			if (next_state == 2'd0)
 				count = 7'd0;
 			if (next_state == 2'd1)
-				count = 7'd60;
+				count = 7'd55;
 			else if (next_state == 2'd2)
 				count = 7'd65;
 		end
