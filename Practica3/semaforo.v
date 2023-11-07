@@ -12,39 +12,45 @@ module semaforo #(parameter initial_state = 2'd0)
 	reg	[1:0]	current_state;
 	reg	[1:0]	next_state;
 	reg	[6:0]	count;
-
 	
 	// Realiza el conteo hasta 120 (55 + 5 + 60) y establece el current_state a initial_state
 	always @(posedge clk_i, negedge rst_i)
 	begin
 		if (!rst_i)
 		begin
-			count = 7'd0;
-			current_state = initial_state;
+			next_state = initial_state;
+
+			if (next_state == 2'd0)
+				count = 7'd0;
+			if (next_state == 2'd1)
+				count = 7'd60;
+			else if (next_state == 2'd2)
+				count = 7'd65;
 		end
 		else
-			if (count == 7'd120)
+			if (count == 7'd119)
 				count = 7'd0;
 			else
-			begin
 				count = count + 1;
-			end
-		
+				
 		current_state = next_state;
 	end
 	
-	// Asigna el estado siguiente y luego se lo asigna al estado actual
+	// Indica el estado siguiente del semaforo con respecto al estado actual y el valor actual del contador
+	// 00 (0) -> verde, 01 (1) -> amarillo, 10 (2) -> rojo
 	always @(current_state, count)
 	begin
-		if (count <= 7'd60)
-			next_state = 2'd0;
-		else if (count <= 7'd65)
+		if (current_state == 2'd0 && count == 7'd59)
 			next_state = 2'd1;
-		else if (count <= 7'd120)
+		else if (current_state == 2'd1 && count == 7'd64)
 			next_state = 2'd2;
+		else if (current_state == 2'd2 && count == 7'd119)
+			next_state = 2'd0;
+		else
+			next_state = current_state;
 	end
 	
-	// Led a encender dependiendo del estado actual
+	// Indica los leds que deben de encender y los que no basados en el estado actual
 	// 00 (0) -> verde, 01 (1) -> amarillo, 10 (2) -> rojo
 	always @(current_state)
 	begin
@@ -76,4 +82,37 @@ module semaforo #(parameter initial_state = 2'd0)
 		endcase
 	end
 
+ endmodule 
+
+
+module tb_semaforo();
+
+	reg				clk_i;
+	reg				rst_i;
+	reg				sw_green_i;
+	wire				red;
+	wire				green;
+	wire				yellow;
+	
+	
+	semaforo #(.initial_state(2'd2)) DUT (
+		.clk_i(clk_i),
+		.rst_i(rst_i),
+		.red(red),
+		.green(green),
+		.yellow(yellow)
+	);
+	
+	initial clk_i = 1'b0;
+	always #10 clk_i = ~clk_i;
+	
+	initial
+	begin
+		rst_i = 1'b0;
+		sw_green_i = 1'b0;
+		#10
+		rst_i = 1'b1;
+	end
+
+	initial #2400 $finish;
 endmodule 
