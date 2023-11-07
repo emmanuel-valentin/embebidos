@@ -19,7 +19,7 @@ module practica3 (
 		.clk_div	(clk_div)
 	);
 
-	semaforo #(.initial_state(3'd0)) semaforo1 (
+	semaforo #(.initial_state(2'd0)) semaforo1 (
 		.clk_i(clk_div),
 		.rst_i	(rst_i),
 		.red(red1_o),
@@ -27,7 +27,7 @@ module practica3 (
 		.yellow(yellow1_o)
 	);
 	
-	semaforo #(.initial_state(3'd1)) semaforo2 (
+	semaforo #(.initial_state(2'd2)) semaforo2 (
 		.clk_i(clk_div),
 		.rst_i	(rst_i),
 		.red(red2_o),
