@@ -3,7 +3,7 @@ module semaforo #(parameter initial_state = 2'd0)
 	input				clk_i,
 	input				rst_i,
 	// TODO: Implementar el push button para dar paso al peaton
-	// input				sw_green_i,
+	input				sw_green_i,
 	output reg		red,
 	output reg		green,
 	output reg		yellow
@@ -13,6 +13,7 @@ module semaforo #(parameter initial_state = 2'd0)
 	reg	[1:0]	next_state;
 	reg	[6:0]	count;
 	reg	[6:0]	start;
+	reg   [1:0] prev_count;
 	
 	initial
 	begin
@@ -46,16 +47,39 @@ module semaforo #(parameter initial_state = 2'd0)
 	
 	// Indica el estado siguiente del semaforo con respecto al estado actual y el valor actual del contador
 	// 00 (0) -> verde, 01 (1) -> amarillo, 10 (2) -> rojo
-	always @(current_state, count)
+	always @(current_state, count, sw_green_i)
 	begin
-		if (current_state == 2'd0 && count == 7'd54)
-			next_state = 2'd1;
-		else if (current_state == 2'd1 && count == 7'd59)
-			next_state = 2'd2;
-		else if (current_state == 2'd2 && count == 7'd119)
-			next_state = 2'd0;
-		else
-			next_state = current_state;
+		case (current_state)
+			2'd0:
+				if (count >= 7'd54)
+					next_state = 2'd1;
+				else if (!sw_green_i == 1'b1)
+				begin
+					prev_count = count;
+					next_state = 7'd3;
+				end
+				else
+					next_state = current_state;
+			2'd1:
+				if (count >= 7'd59)
+					next_state = 2'd2;
+				else
+					next_state = current_state;
+			2'd2:
+				if (count >= 7'd119)
+					next_state = 2'd0;
+				else
+					next_state = current_state;
+			2'd3:
+			begin
+				if (count == prev_count + 5)
+					next_state = 2'd0;
+				else
+					next_state = current_state;
+			end
+			default:
+				next_state = initial_state;
+		endcase
 	end
 	
 	// Indica los leds que deben de encender y los que no basados en el estado actual
@@ -75,7 +99,7 @@ module semaforo #(parameter initial_state = 2'd0)
 				yellow = 1'b1;
 				red = 1'b0;
 			end
-			2'd2:
+			2'd2, 2'd3:
 			begin
 				green = 1'b0;
 				yellow = 1'b0;
@@ -93,34 +117,34 @@ module semaforo #(parameter initial_state = 2'd0)
  endmodule 
 
 
-module tb_semaforo();
-
-	reg				clk_i;
-	reg				rst_i;
-	reg				sw_green_i;
-	wire				red;
-	wire				green;
-	wire				yellow;
-	
-	
-	semaforo #(.initial_state(2'd2)) DUT (
-		.clk_i(clk_i),
-		.rst_i(rst_i),
-		.red(red),
-		.green(green),
-		.yellow(yellow)
-	);
-	
-	initial clk_i = 1'b0;
-	always #10 clk_i = ~clk_i;
-	
-	initial
-	begin
-		rst_i = 1'b0;
-		sw_green_i = 1'b0;
-		#10
-		rst_i = 1'b1;
-	end
-
-	initial #2400 $finish;
-endmodule 
+//module tb_semaforo();
+//
+//	reg				clk_i;
+//	reg				rst_i;
+//	reg				sw_green_i;
+//	wire				red;
+//	wire				green;
+//	wire				yellow;
+//	
+//	
+//	semaforo #(.initial_state(2'd2)) DUT (
+//		.clk_i(clk_i),
+//		.rst_i(rst_i),
+//		.red(red),
+//		.green(green),
+//		.yellow(yellow)
+//	);
+//	
+//	initial clk_i = 1'b0;
+//	always #10 clk_i = ~clk_i;
+//	
+//	initial
+//	begin
+//		rst_i = 1'b0;
+//		sw_green_i = 1'b0;
+//		#10
+//		rst_i = 1'b1;
+//	end
+//
+//	initial #2400 $finish;
+//endmodule 

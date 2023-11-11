@@ -14,7 +14,7 @@ module freq_div(
 			clk_div = 1'b0;
 		end
 		else
-			if (count == 26'd49_999_999)
+			if (count == 26'd6_999_999)
 			begin
 				count = 26'b0;
 				clk_div = ~clk_div;
