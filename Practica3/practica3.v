@@ -22,8 +22,8 @@ module practica3 (
 	semaforo #(.initial_state(0)) semaforo1 (
 		.clk_i(clk_div),
 		.rst_i(rst_i),
-		.red(red1_o),
 		.sw_green_i(sw_green_1),
+		.red(red1_o),
 		.green(green1_o),
 		.yellow(yellow1_o)
 	);
@@ -52,17 +52,22 @@ module tb_practica3();
 	wire	yellow1_o;
 	wire	yellow2_o;
 	
-	practica3 DUT (
+	semaforo #(.initial_state(0)) semaforo1 (
 		.clk_i(clk_i),
 		.rst_i(rst_i),
-		.sw_green_1(sw_green_1),
-		.sw_green_2(sw_green_2),
-		.red1_o(red1_o),
-		.red2_o(red2_o),
-		.green1_o(green1_o),
-		.green2_o(green2_o),
-		.yellow1_o(yellow1_o),
-		.yellow2_o(yellow2_o)
+		.sw_green_i(sw_green_1),
+		.red(red1_o),
+		.green(green1_o),
+		.yellow(yellow1_o)
+	);
+	
+	semaforo #(.initial_state(2)) semaforo2 (
+		.clk_i(clk_i),
+		.rst_i(rst_i),
+		.sw_green_i(sw_green_2),
+		.red(red2_o),
+		.green(green2_o),
+		.yellow(yellow2_o)
 	);
 	
 	initial clk_i = 1'b0;
@@ -76,8 +81,16 @@ module tb_practica3();
 		sw_green_2 = 1'b0;
 		#10
 		rst_i = 1'b1;
+		#15
+		sw_green_1 = 1'b1;
+		#1
+		sw_green_1 = 1'b0;
+		#1900
+		sw_green_2 = 1'b1;
+		#1
+		sw_green_2 = 1'b0;
 	end
 	
-	initial #2400 $finish;
+	initial #4800 $finish;
 
 endmodule 
