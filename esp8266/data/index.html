@@ -3,19 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6CV2 - Embebidos</title>
     <style>
       body {
+        display: flex;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
           Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
           sans-serif;
-
-        display: flex;
         flex-direction: column;
         justify-content: center;
         min-height: 100vh;
         max-width: 70%;
         margin: 0 auto;
+        font-family: 16px;
       }
 
       p {
@@ -27,10 +26,14 @@
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         flex-direction: column;
-        gap: 10px;
+        font-size: 28px;
         padding: 10px;
         background-color: antiquewhite;
         align-items: center;
+      }
+
+      .campus {
+        font-size: 20px;
       }
 
       .main {
@@ -46,11 +49,6 @@
 
       .text-bold {
         font-weight: bold;
-      }
-
-      .footer {
-        padding: 20px;
-        text-align: center;
       }
 
       .imagen {
@@ -69,11 +67,12 @@
         padding: 10px;
       }
     </style>
+    <title>6CV2 - Embebidos</title>
   </head>
   <body>
-    <header class="nav text-bold">
-      <p>Instituto Politécnico Nacional</p>
-      <p>Escuela Superior de Cómputo</p>
+    <header class="nav">
+      <p class="institute text-bold">Instituto Politécnico Nacional</p>
+      <p class="campus">Escuela Superior de Cómputo</p>
     </header>
     <main class="main">
       <p>
@@ -84,7 +83,7 @@
         <li>Hernández Zuñiga Karla Grisel</li>
         <li>Medina Avila Alejandra</li>
         <li>Valentin Ramos Emmanuel Guadalupe</li>
-        <li>Vargas Torres Baltazar David <small>(Toñito Jr.)</small></li>
+        <li>Vargas Torres Baltazar David</li>
       </ul>
       <section class="materia text-bold">
         <p>Grupo: 6CV2</p>
@@ -100,7 +99,6 @@
         </button>
       </section>
     </main>
-    <footer class="footer">Todos los derechos reservados</footer>
     <script>
       const toggleLedBtn = document.getElementById('btn-toggle-led');
 

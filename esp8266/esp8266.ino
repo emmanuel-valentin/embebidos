@@ -6,6 +6,8 @@
 
 ESP8266WebServer server(80);
 
+#define LED 4
+
 void handleIndex() {
   if (!SPIFFS.begin()) {
     Serial.println("Error al montar el sistema de archivos");
@@ -30,12 +32,14 @@ void handleIndex() {
 
 void handleToggleLed() {
   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  digitalWrite(LED, !digitalRead(LED));
+  
   String response = "{\"state\":";
 
   if (digitalRead(LED_BUILTIN) == HIGH) response += "\"off\"";
   else response += "\"on\"";
 
-  response += "}";
+  response += "}\n";
   
   server.send(200, "text/plain", response);
 }
@@ -57,6 +61,8 @@ void setup(void) {
   server.on("/", HTTP_GET, handleIndex);
   server.on("/", HTTP_POST, handleToggleLed);
 
+  digitalWrite(LED, HIGH);
+
   server.begin();
   Serial.print("Server IP: http://");
   Serial.print(WiFi.localIP());
@@ -67,4 +73,5 @@ void setup(void) {
 void loop(void) {
   server.handleClient();
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED, OUTPUT);
 }
