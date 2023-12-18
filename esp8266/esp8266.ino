@@ -7,6 +7,7 @@
 ESP8266WebServer server(80);
 
 #define LED 4
+#define P_BUTTON 5
 
 void handleIndex() {
   if (!SPIFFS.begin()) {
@@ -46,6 +47,11 @@ void handleToggleLed() {
 
 void setup(void) {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(LED, OUTPUT);
+  pinMode(P_BUTTON, INPUT);
+
+  digitalWrite(LED, HIGH);
 
   Serial.print("Connecting");
   WiFi.begin(ssid, passPhrase);
@@ -61,8 +67,6 @@ void setup(void) {
   server.on("/", HTTP_GET, handleIndex);
   server.on("/", HTTP_POST, handleToggleLed);
 
-  digitalWrite(LED, HIGH);
-
   server.begin();
   Serial.print("Server IP: http://");
   Serial.print(WiFi.localIP());
@@ -71,7 +75,9 @@ void setup(void) {
 
 
 void loop(void) {
+  int p_button_state = digitalRead(P_BUTTON);
+
+  if (p_button_state == HIGH) handleToggleLed();
+  
   server.handleClient();
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(LED, OUTPUT);
 }

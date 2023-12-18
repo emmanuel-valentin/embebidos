@@ -91,28 +91,23 @@
       </section>
       <section class="imagen">
         <img
-          src="https://github.com/emmanuel-valentin/embebidos/blob/main/WhatsApp%20Image%202023-11-22%20at%2015.32.56_046d70e3.jpg?raw=true"
+          src="https://raw.githubusercontent.com/emmanuel-valentin/embebidos/main/team.jpg"
           alt="Imagen"
         />
-        <button class="btn" id="btn-toggle-led" type="submit" id="btn-led">
-          Apagar LED
-        </button>
+        <button class="btn" id="btn-led">Encender/Apagar LED</button>
       </section>
     </main>
     <script>
-      const toggleLedBtn = document.getElementById('btn-toggle-led');
+      const btnToggleLed = document.getElementById('btn-led');
 
       const fetchToggleLed = async () => {
         const response = await fetch(window.location.href, { method: 'POST' });
         const { state } = await response.json();
-
-        toggleLedBtn.textContent =
-          state === 'on' ? 'Apagar LED' : 'Encender LED';
       };
 
       document.addEventListener('DOMContentLoaded', fetchToggleLed);
 
-      toggleLedBtn.addEventListener('click', (event) => {
+      btnToggleLed.addEventListener('click', (event) => {
         event.preventDefault();
         fetchToggleLed();
       });
